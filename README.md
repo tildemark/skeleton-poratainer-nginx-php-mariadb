@@ -1,23 +1,87 @@
-# Docker LEMP Stack with phpMyAdmin
+# Docker LEMP Stack (Nginx, MariaDB, PHP + phpMyAdmin)
 
-This is a complete Docker Compose configuration for a LEMP (Nginx, MariaDB, PHP) stack, which also includes phpMyAdmin for easy database management.
+This repository provides a `docker-compose.yml` file to quickly launch a full web development environment.
 
-This project is structured to use a `.env` file for all passwords and sensitive information, so you can safely commit the repository to GitHub without exposing your credentials.
+## 🚀 Quick Start
 
-## Services Included
-
-| Service | Image | Host Port |
-| :--- | :--- | :--- |
-| **Nginx** | `nginx:1.25-alpine` | `:80` |
-| **PHP** | `php:8.2-fpm-alpine` | `(none)` |
-| **MariaDB** | `mariadb:10.11` | `(none)` |
-| **phpMyAdmin** | `phpmyadmin:5.2` | `:8080` |
+1.  Clone the repo: `git clone https://github.com/your-username/your-repo-name.git`
+2.  `cd your-repo-name`
+3.  `cp .env.example .env`
+4.  Edit the `.env` file with your secure passwords.
+5.  `docker compose up -d`
 
 ---
 
-## ⚡ How to Deploy
+## 📋 Project Overview
 
-### 1. Clone the Repository
-```sh
-git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+### Services
+
+* **`nginx`**: Nginx 1.25 (Alpine)
+* **`php`**: PHP 8.2 (FPM-Alpine)
+* **`mariadb`**: MariaDB 10.11
+* **`phpmyadmin`**: phpMyAdmin 5.2
+
+### Required File Structure
+
+To run this stack, your project folder **must** be organized like this:
+
+```plaintext
+.
+├── .env.example        # Template for environment variables
+├── .gitignore          # Prevents secrets from being committed
+├── docker-compose.yml  # The main stack file (uses variables from .env)
+│
+├── app/                # <-- Your PHP application code goes here
+│   └── index.php
+│
+└── nginx/              # <-- Nginx configuration
+    └── default.conf
+```
+
+## ⚙️ Step-by-Step Setup
+### Step 1: Clone the Repository
+```Bash
+
+git clone https://github.com/your-username/your-repo-name.git
 cd your-repo-name
+```
+### Step 2: Configure Your Environment
+This project uses a .env file to keep your passwords secure and out of GitHub.
+
+1. Copy the example file:
+
+```Bash
+cp .env.example .env
+```
+2. Open the new .env file with a text editor and set your own secure passwords.
+
+### Step 3: Add Your PHP Code
+Place your website's files (e.g., index.php, config.php, etc.) into the ./app/ directory.
+
+### Step 4: Deploy the Stack
+Run the following command from your project's root directory:
+
+```Bash
+docker compose up -d
+```
+## 💻 Accessing Your Services
+* #### Your Website:
+  * URL: http://localhost
+* #### phpMyAdmin (Database Manager):
+  * URL: http://localhost:8080
+  * Server: mariadb
+  * Username: root
+  * Password: (The MYSQL_ROOT_PASSWORD you set in your .env file)
+
+## 🔒 Security
+The .gitignore file is configured to ignore your local .env file. This is crucial for security. Never commit your .env file to GitHub.
+
+---
+
+After you replace the text in your `README.md` file, you can update it on GitHub with these commands:
+
+```sh
+git add README.md
+git commit -m "Fix README formatting"
+git push
+```

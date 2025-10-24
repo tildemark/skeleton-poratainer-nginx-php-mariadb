@@ -4,9 +4,8 @@ services:
   # Nginx Web Server
   nginx:
     image: nginx:1.25-alpine
-    container_name: my-nginx
     ports:
-      - "80:80"
+      - "${NGINX_PORT}:80" # <-- CHANGED
     volumes:
       - ./app:/var/www/html
       - ./nginx:/etc/nginx/conf.d
@@ -18,7 +17,7 @@ services:
   # PHP-FPM Service
   php:
     image: php:8.2-fpm-alpine
-    container_name: my-php
+    # No port or container_name needed
     volumes:
       - ./app:/var/www/html
     networks:
@@ -27,9 +26,8 @@ services:
   # MariaDB Database
   mariadb:
     image: mariadb:10.11
-    container_name: my-mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}" # <-- Reads from .env
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
@@ -41,12 +39,11 @@ services:
   # phpMyAdmin
   phpmyadmin:
     image: phpmyadmin:5.2
-    container_name: my-phpmyadmin
     ports:
-      - "8080:80"
+      - "${PMA_PORT}:80" # <-- CHANGED
     environment:
       PMA_HOST: "mariadb"
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}" # <-- Reads from .env
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     depends_on:
       - mariadb
     networks:
